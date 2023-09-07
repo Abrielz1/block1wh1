@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Objects;
+
 @Controller
 @RequestMapping(value = "/books")
 public class BookShelfController {
@@ -33,6 +35,9 @@ public class BookShelfController {
 
     @PostMapping("/save")
     public String saveBook(Book book) {
+        if (Objects.equals(book.getAuthor(), "") || Objects.equals(book.getTitle(), "")) {
+            return "redirect:/books/shelf";
+        }
         bookService.saveBook(book);
         logger.info("current repository size: " + bookService.getAllBooks().size());
         return "redirect:/books/shelf";
