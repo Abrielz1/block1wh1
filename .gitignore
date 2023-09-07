@@ -1,0 +1,12 @@
+/target/classes/app-config.xml
+/target/classes/org/example/web/dto/Book.class
+/target/classes/images/book_icon.png
+/target/classes/org/example/app/services/BookRepository.class
+/target/classes/org/example/app/services/BookService.class
+/target/classes/org/example/web/controllers/BookShelfController.class
+/target/classes/log4j.xml
+/target/classes/org/example/web/controllers/LoginController.class
+/target/classes/org/example/web/dto/LoginForm.class
+/target/classes/org/example/app/services/LoginService.class
+/target/classes/org/example/app/services/ProjectRepository.class
+/target/classes/web-config.xml
