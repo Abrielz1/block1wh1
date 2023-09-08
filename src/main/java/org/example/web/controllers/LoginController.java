@@ -1,30 +1,33 @@
 package org.example.web.controllers;
 
-import org.apache.log4j.Logger;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;;
 import org.example.app.services.LoginService;
 import org.example.web.dto.LoginForm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(value = "/login")
 public class LoginController {
 
-    private final Logger logger = Logger.getLogger(LoginController.class);
+//    private final Logger logger = Logger.getLogger(LoginController.class);
+
     private final LoginService loginService;
 
-    @Autowired
-    public LoginController(LoginService loginService) {
-        this.loginService = loginService;
-    }
+//    @Autowired
+//    public LoginController(LoginService loginService) {
+//        this.loginService = loginService;
+//    }
 
     @GetMapping
     public String login(Model model) {
-        logger.info("GET /login returns login_page.html");
+        log.info("GET /login returns login_page.html");
         model.addAttribute("loginForm", new LoginForm());
         return "login_page";
     }
@@ -32,10 +35,10 @@ public class LoginController {
     @PostMapping("/auth")
     public String authenticate(LoginForm loginFrom) {
         if (loginService.authenticate(loginFrom)) {
-            logger.info("login OK redirect to book shelf");
+            log.info("login OK redirect to book shelf");
             return "redirect:/books/shelf";
         } else {
-            logger.info("login FAIL redirect back to login");
+            log.info("login FAIL redirect back to login");
             return "redirect:/login";
         }
     }
