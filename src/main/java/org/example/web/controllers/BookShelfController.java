@@ -18,13 +18,7 @@ import java.util.Objects;
 @RequestMapping(value = "/books")
 public class BookShelfController {
 
-   // private Logger logger = Logger.getLogger(BookShelfController.class);
     private final BookService bookService;
-
-//    @Autowired
-//    public BookShelfController(BookService bookService) {
-//        this.bookService = bookService;
-//    }
 
     @GetMapping("/shelf")
     public String books(Model model) {

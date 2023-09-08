@@ -2,10 +2,8 @@ package org.example.app.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.log4j.Logger;
 import org.example.web.dto.Book;
 import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookRepository implements ProjectRepository<Book> {
 
-   // private final Logger logger = Logger.getLogger(BookRepository.class);
     private final List<Book> repo = new ArrayList<>();
 
     @Override
