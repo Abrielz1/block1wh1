@@ -51,4 +51,13 @@ public class BookShelfController {
             return "redirect:/books/shelf";
         }
     }
+
+    @PostMapping("/removeByRegex")
+    public String removeByRegex(@RequestParam(value = "queryRegex") String regex) {
+        if (bookService.removeByRegex(regex)) {
+            return "redirect:/books/shelf";
+        } else {
+            return "redirect:/books/shelf";
+        }
+    }
 }
