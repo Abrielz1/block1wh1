@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Custom 403</title>
 </head>
 <body>
-
+<h1>File not Found or Empty</h1>
+<p th:text="${errorMessage}"></p>
+<a href="/spring_m2_6_war_exploded/books/shelf">back to shelf page</a>
 </body>
 </html>

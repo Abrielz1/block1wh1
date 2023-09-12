@@ -75,6 +75,9 @@ public class BookShelfController {
     public String uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
         String name = file.getOriginalFilename();
         byte[] bytes = file.getBytes();
+        if (bytes.length == 0) {
+            throw new Exception("");
+        }
 
         //create dir
         String rootPath = System.getProperty("catalina.home");
