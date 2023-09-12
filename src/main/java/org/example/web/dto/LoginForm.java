@@ -1,8 +1,12 @@
 package org.example.web.dto;
 
-public class LoginForm {
+import javax.validation.constraints.NotBlank;
 
+public class LoginForm {
+    @NotBlank
     private String username;
+
+    @NotBlank
     private String password;
 
     public LoginForm(String username, String password) {

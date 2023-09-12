@@ -1,5 +1,7 @@
 package org.example.web.controllers;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Logger;
 import org.example.app.services.BookService;
 import org.example.web.dto.Book;
@@ -20,22 +22,23 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
+@Slf4j
 @Controller
-@RequestMapping(value = "/books")
 @Scope("singleton")
+@RequestMapping(value = "/books")
+//@RequiredArgsConstructor
 public class BookShelfController {
 
-    private Logger logger = Logger.getLogger(BookShelfController.class);
     private BookService bookService;
 
-    @Autowired
-    public BookShelfController(BookService bookService) {
-        this.bookService = bookService;
-    }
+     @Autowired
+       public BookShelfController(BookService bookService) {
+          this.bookService = bookService;
+      }
 
     @GetMapping("/shelf")
     public String books(Model model) {
-        logger.info(this.toString());
+        log.info(this.toString());
         model.addAttribute("book", new Book());
         model.addAttribute("bookIdToRemove", new BookIdToRemove());
         model.addAttribute("bookList", bookService.getAllBooks());
@@ -51,7 +54,7 @@ public class BookShelfController {
             return "book_shelf";
         } else {
             bookService.saveBook(book);
-            logger.info("current repository size: " + bookService.getAllBooks().size());
+            log.info("current repository size: " + bookService.getAllBooks().size());
             return "redirect:/books/shelf";
         }
     }
@@ -86,7 +89,7 @@ public class BookShelfController {
         stream.write(bytes);
         stream.close();
 
-        logger.info("new file saved at: " + serverFile.getAbsolutePath());
+        log.info("new file saved at: " + serverFile.getAbsolutePath());
 
         return "redirect:/books/shelf";
     }
