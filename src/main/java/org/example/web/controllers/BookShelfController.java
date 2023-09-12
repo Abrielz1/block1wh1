@@ -31,15 +31,16 @@ import java.io.FileOutputStream;
 @Slf4j
 @Controller
 @Scope("singleton")
+@RequiredArgsConstructor
 @RequestMapping(value = "/books")
 public class BookShelfController {
 
-    private BookService bookService;
+    private final BookService bookService;
 
-    @Autowired
-    public BookShelfController(BookService bookService) {
-        this.bookService = bookService;
-    }
+//    @Autowired
+//    public BookShelfController(BookService bookService) {
+//        this.bookService = bookService;
+//    }
 
     @GetMapping("/shelf")
     public String books(Model model) {

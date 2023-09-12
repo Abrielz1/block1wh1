@@ -22,7 +22,6 @@ public class LoginController {
 
     private final LoginService loginService;
 
-
     @GetMapping
     public String login(Model model) {
         log.info("GET /login returns login_page.html");
