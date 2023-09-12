@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Logger;
 import org.example.app.exceptions.BookShelfLoginException;
 import org.example.app.exceptions.EmptyFileException;
+import org.example.app.exceptions.RegexException;
 import org.example.app.services.BookService;
+import org.example.app.services.RegExValidatorService;
 import org.example.web.dto.Book;
 import org.example.web.dto.BookIdToRemove;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +36,10 @@ public class BookShelfController {
 
     private BookService bookService;
 
-       @Autowired
-          public BookShelfController(BookService bookService) {
-           this.bookService = bookService;
-        }
+    @Autowired
+    public BookShelfController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     @GetMapping("/shelf")
     public String books(Model model) {
@@ -74,6 +76,19 @@ public class BookShelfController {
         }
     }
 
+    @PostMapping("/removeByRegex")
+    public String removeBookByRegex(@RequestParam(value = "queryRegex", defaultValue = "0")
+                                    String queryRegex)
+            throws IllegalAccessException, RegexException {
+
+        if (new RegExValidatorService(queryRegex).regexValidator()) {
+            bookService.removeByRegex(queryRegex);
+            return "redirect:/books/shelf";
+        } else {
+            throw new RegexException("Invalid Query Regex Request!");
+        }
+    }
+
     @PostMapping("/uploadFile")
     public String uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
         String name = file.getOriginalFilename();
@@ -81,7 +96,6 @@ public class BookShelfController {
         if (bytes.length == 0) {
             log.info("File not Found or Empty");
             throw new EmptyFileException("File not Found or Empty");
-            //  throw new BookShelfLoginException("invalid username or password");
         }
 
         //create dir
@@ -108,5 +122,13 @@ public class BookShelfController {
 
         log.warn("we throw!");
         return "errors/403";
+    }
+
+    @ExceptionHandler(RegexException.class)
+    public String handleError(Model model, RegexException exception) {
+        model.addAttribute("errorMessage", exception.getMessage());
+
+        log.warn("we throw new!");
+        return "errors/R403";
     }
 }

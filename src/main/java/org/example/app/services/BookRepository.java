@@ -31,13 +31,16 @@ public class BookRepository implements ProjectRepository<Book>, ApplicationConte
     @Override
     public List<Book> retreiveAll() {
         List<Book> books = jdbcTemplate.query("SELECT * FROM books", (ResultSet rs, int rowNum) -> {
+
             Book book = new Book();
             book.setId(rs.getInt("id"));
             book.setAuthor(rs.getString("author"));
             book.setTitle(rs.getString("title"));
             book.setSize(rs.getInt("size"));
+
             return book;
         });
+
         return new ArrayList<>(books);
     }
 
@@ -71,5 +74,57 @@ public class BookRepository implements ProjectRepository<Book>, ApplicationConte
 
     public void defaultDestroy() {
         logger.info("default DESTROY in book repo bean");
+    }
+
+    @Override
+    public void deleteBookById(Integer id) {
+
+        String sql = """
+                     DELETE FROM books  WHERE id = :id
+                     """;
+
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("id", id);
+        jdbcTemplate.update(sql, parameterSource);
+        logger.info("remove book completed");
+    }
+
+    @Override
+    public void deleteBookByAuthor(String regex) {
+
+        String sql = """
+                     DELETE FROM books WHERE AUTHOR like :author
+                     """;
+
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("author", regex);
+        jdbcTemplate.update(sql, parameterSource);
+        logger.info("remove book completed");
+    }
+
+    @Override
+    public void deleteBookByTitle(String regex) {
+
+        String sql = """
+                     DELETE FROM books WHERE title like :title
+                     """;
+
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("title", regex);
+        jdbcTemplate.update(sql, parameterSource);
+        logger.info("remove book completed");
+    }
+
+    @Override
+    public void deleteBookBySize(Integer id) {
+
+        String sql = """
+                     DELETE FROM books WHERE size = :size
+                     """;
+
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("size", id);
+        jdbcTemplate.update(sql, parameterSource);
+        logger.info("remove book completed");
     }
 }

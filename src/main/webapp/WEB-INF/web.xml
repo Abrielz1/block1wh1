@@ -10,5 +10,8 @@
     <error-page>
         <error-code>403</error-code>
         <location>/403</location>
-    </error-page>
+    </error-page>    <error-page>
+    <error-code>403</error-code>
+    <location>/R403</location>
+</error-page>
 </web-app>

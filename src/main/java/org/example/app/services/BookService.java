@@ -36,4 +36,26 @@ public class BookService {
     public void defaultDestroy() {
         logger.info("default DESTROY in book service");
     }
+
+    public void removeByRegex(String regex) {
+
+        String[] array = regex.split(":");
+
+        if (regex.contains("id")) {
+
+            Integer id = Integer.parseInt(array[1]);
+            bookRepo.deleteBookById(id);
+        }
+        if (regex.contains("author")) {
+            bookRepo.deleteBookByAuthor(array[1]);
+        }
+        if (regex.contains("title")) {
+            bookRepo.deleteBookByTitle(array[1]);
+        }
+        if (regex.contains("size")) {
+
+            Integer id = Integer.parseInt(array[1]);
+            bookRepo.deleteBookBySize(id);
+        }
+    }
 }
