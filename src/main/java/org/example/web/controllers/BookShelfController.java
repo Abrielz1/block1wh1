@@ -3,6 +3,8 @@ package org.example.web.controllers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Logger;
+import org.example.app.exceptions.BookShelfLoginException;
+import org.example.app.exceptions.EmptyFileException;
 import org.example.app.services.BookService;
 import org.example.web.dto.Book;
 import org.example.web.dto.BookIdToRemove;
@@ -11,6 +13,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,21 +23,21 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 @Slf4j
 @Controller
 @Scope("singleton")
 @RequestMapping(value = "/books")
-//@RequiredArgsConstructor
 public class BookShelfController {
 
     private BookService bookService;
 
-     @Autowired
-       public BookShelfController(BookService bookService) {
-          this.bookService = bookService;
-      }
+       @Autowired
+          public BookShelfController(BookService bookService) {
+           this.bookService = bookService;
+        }
 
     @GetMapping("/shelf")
     public String books(Model model) {
@@ -76,7 +79,9 @@ public class BookShelfController {
         String name = file.getOriginalFilename();
         byte[] bytes = file.getBytes();
         if (bytes.length == 0) {
-            throw new Exception("");
+            log.info("File not Found or Empty");
+            throw new EmptyFileException("File not Found or Empty");
+            //  throw new BookShelfLoginException("invalid username or password");
         }
 
         //create dir
@@ -95,5 +100,13 @@ public class BookShelfController {
         log.info("new file saved at: " + serverFile.getAbsolutePath());
 
         return "redirect:/books/shelf";
+    }
+
+    @ExceptionHandler(EmptyFileException.class)
+    public String handleError(Model model, EmptyFileException exception) {
+        model.addAttribute("errorMessage", exception.getMessage());
+
+        log.warn("we throw!");
+        return "errors/403";
     }
 }
