@@ -1,6 +1,7 @@
 package org.example.web.controllers;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Logger;
 import org.example.app.exceptions.BookShelfLoginException;
@@ -36,11 +37,6 @@ import java.io.FileOutputStream;
 public class BookShelfController {
 
     private final BookService bookService;
-
-//    @Autowired
-//    public BookShelfController(BookService bookService) {
-//        this.bookService = bookService;
-//    }
 
     @GetMapping("/shelf")
     public String books(Model model) {
@@ -78,10 +74,9 @@ public class BookShelfController {
     }
 
     @PostMapping("/removeByRegex")
+    @SneakyThrows
     public String removeBookByRegex(@RequestParam(value = "queryRegex", defaultValue = "0")
-                                    String queryRegex)
-            throws IllegalAccessException, RegexException {
-
+                                    String queryRegex) {
         if (new RegExValidatorService(queryRegex).regexValidator()) {
             bookService.removeByRegex(queryRegex);
             return "redirect:/books/shelf";
